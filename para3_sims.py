@@ -12,10 +12,24 @@ job_list = {
     "C++ developer": {"salary": 45, "gladness_less": 25},
     "Rust developer": {"salary": 70, "gladness_less": 1}
 }
+pet_list = {
+    "kotik": {"hunger": 40, "gladness_boost": 15, "food_consumption": 3},
+    "sobaka": {"hunger": 60, "gladness_boost": 20, "food_consumption": 5},
+    "Popugai": {"hunger": 20, "gladness_boost": 10, "food_consumption": 1},
+    "Hamster criminal": {"hunger": 10, "gladness_boost": 5, "food_consumption": 1}
+}
+
+
+class Pet:
+    def __init__(self, pet_list):
+        self.type = random.choice(list(pet_list))
+        self.hunger = pet_list[self.type]["hunger"]
+        self.gladness_boost = pet_list[self.type]["gladness_boost"]
+        self.food_consumption = pet_list[self.type]["food_consumption"]
 
 
 class Human:
-    def __init__(self,name="Human", job = None, home=None, car=None):
+    def __init__(self,name="Human", job = None, home=None, car=None, pet=None):
         self.name = name
         self.money = 100
         self.gladness = 50
@@ -23,6 +37,13 @@ class Human:
         self.job = job
         self.home = home
         self.car = car
+        self.pet = pet
+
+
+
+
+    def get_pet(self):
+        self.pet = Pet(pet_list)
 
 
 
@@ -40,6 +61,18 @@ class Human:
             return
         self.job = Job(job_list)
 
+        if self.pet is None:
+            self.get_pet()
+            print(f"I adopted a {self.pet.type}!")
+
+
+    def interact_with_pet(self):
+        print(f"Playing with my {self.pet.type}!")
+        self.gladness += self.pet.gladness_boost
+        self.satiety -= 2
+        if not self.pet.eat(self.home):
+            print(f"Not enough food for the {self.pet.type}!")
+
 
     def eat(self):
         if self.home.food <= 0:
@@ -50,6 +83,14 @@ class Human:
                 return
             self.satiety += 5
             self.home.food -= 5
+
+    def interact_with_pet(self):
+        print(f"Playing with my {self.pet.type}!")
+        self.gladness += self.pet.gladness_boost
+        self.satiety -= 2
+        # Pets consume house food when you feed/interact with them
+        if not self.pet.eat(self.home):
+            print(f"Not enough food for the {self.pet.type}!")
 
 
 
