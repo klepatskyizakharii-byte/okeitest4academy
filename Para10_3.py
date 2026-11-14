@@ -1,0 +1,13 @@
+import sqlite3
+
+connection = sqlite3.connect("itstep_DB.sl3", 5)
+cur = connection.cursor()
+print(connection)
+print(cur)
+
+cur.execute("SELECT rowid, name FROM first_table;")
+connection.commit()
+
+res = cur.fetchall()
+print(res)
+connection.close()
